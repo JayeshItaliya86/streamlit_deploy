@@ -20,7 +20,7 @@ The health company **"skinCare"** wants to create a simple web page where the us
 | File | Description |
 |:---|:---|
 |app.py|use it for streamlit application|
-|models.py|use it for streamlit backend function file|
+|skin_cancer_model.py|use it for streamlit backend function file|
 |models/base_model_v4.h5|save cnn model|
 |models/keras_model_skin_or_else|save model for streamlit application|
 
@@ -29,7 +29,7 @@ https://skin-cancer-application.herokuapp.com/
 
 # Contributors
 |Name|Github|
-|---|:---:|
+|:---|:---|
 | Anne Jungers|https://github.com/annejungers|
 |Jayesh Italiya|https://github.com/JayeshItaliya86|
 |Jose Roldan|https://github.com/Roldan87|
