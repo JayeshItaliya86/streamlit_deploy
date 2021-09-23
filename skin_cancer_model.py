@@ -56,7 +56,7 @@ def cancer_classification(uploaded_file):
                 img = image.img_to_array(img)
                 img = img.reshape((1, img.shape[0], img.shape[1], img.shape[2]))
                 img = preprocess_input(img)
-                model = keras.models.load_model('models/base_model_v5.h5', compile=False)
+                model = keras.models.load_model('models/base_model_v6.h5', compile=False)
                 prediction = model.predict(img)
         f.close()
         for img in os.listdir(user_folder):
