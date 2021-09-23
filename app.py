@@ -59,7 +59,7 @@ if uploaded_file is not None:
             for img in os.listdir(user_folder):
                 os.remove(user_folder+img)
 else:
-    st.write('File not found. Please upload your skin-mole picture with format: .png / .jpeg / .jpg')
+    st.write('File not found. Please upload your skin-mole picture with format: .png / .jpeg / .jpg / .jfif')
 
 
 
