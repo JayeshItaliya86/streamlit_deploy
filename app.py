@@ -35,11 +35,11 @@ uploaded_file = st.file_uploader("Upload an image of skin", type=['png', 'jpeg',
 if uploaded_file is not None:
     user_image = Image.open(uploaded_file).convert('RGB')
     st.image(user_image, use_column_width=True)
-    with open(os.path.join("cancer_user", uploaded_file.name), "wb") as f:
+    with open(os.path.join("user_of_cancer", uploaded_file.name), "wb") as f:
         f.write(uploaded_file.getbuffer())
         st.success("Saved File")
         time.sleep(2)
-        user_folder = 'cancer_user/'
+        user_folder = 'user_of_cancer/'
         for img in os.listdir(user_folder):
             img = tf.keras.preprocessing.image.load_img(user_folder+img, target_size=(100,125))
             img = image.img_to_array(img)
