@@ -1,66 +1,69 @@
-import streamlit as st
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
-from PIL import Image, ImageOps
-from tensorflow.keras.preprocessing import image
 import numpy as np
-import os
-import time
+import streamlit as st
+from PIL import Image
+
+from skin_cancer_model import skin_or_else_classification, cancer_classification
 
 # Title of the page
-st.set_page_config(page_title="Skin Cancer App")
+st.set_page_config(page_title="Skin Cancer App",layout='wide')
 
-# Title and introduction
+
+# Main text
 st.title("Skin Cancer Identifier App")
 st.write("""
 This app detects whether or not skin is infected by cancer, based on an image.
+\nThis app is __NOT__ meant for medical purposes!
+""")
+
+# Sidebar text
+st.sidebar.title('Model information')
+st.sidebar.write("""
+CNN built with Keras (Tensorflow)
+\nDataset: The [__HAM10000__](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DBW86T)
+\nData augmentation from 10.000 to 26.500 images
 \n Model and application created by 
 [Anne](https://github.com/annejungers),
 [Jayesh](https://github.com/JayeshItaliya86), 
 [Jose](https://github.com/Roldan87)
 and [Logan](https://github.com/lvendrix)
 @Becode Gent.
-\nThis app is __NOT__ meant for medical purposes!
-\nData source: Harvard Dataverse
-\n"The __HAM10000__ ("Human Against Machine with 10000 training images") dataset, 
-\na large collection of multi-source dermatoscopic images of common pigmented skin lesions."
 """)
-
-
-image_size = (100,125)
 
 # file upload and handling logic
 uploaded_file = st.file_uploader("Upload an image of skin", type=['png', 'jpeg', 'jpg', 'jfif'])
 if uploaded_file is not None:
     user_image = Image.open(uploaded_file).convert('RGB')
     st.image(user_image, use_column_width=True)
-    with open(os.path.join("user_of_cancer", uploaded_file.name), "wb") as f:
-        f.write(uploaded_file.getbuffer())
-        st.success("Saved File")
-        time.sleep(2)
-        user_folder = 'user_of_cancer/'
-        for img in os.listdir(user_folder):
-            img = tf.keras.preprocessing.image.load_img(user_folder+img, target_size=(100,125))
-            img = image.img_to_array(img)
-            img = img.reshape((1, img.shape[0], img.shape[1], img.shape[2]))
-            img = preprocess_input(img)
-            model = keras.models.load_model('base_model_v4.h5', compile=False)
-            pred = model.predict(img)
-            prediction = np.rint(pred)
-            #st.write(pred)
-            st.subheader("Dx")
-            if prediction[0][0] == 1:
-                st.write('Cancer with {:.2f} % accuracy'.format(pred[0][0]*100))
-            else:
-                st.write('Not Cancer with {:.2f} % accuracy'.format(pred[0][1]*100))
-            time.sleep(5)
-            f.close()
-            for img in os.listdir(user_folder):
-                os.remove(user_folder+img)
-else:
-    st.write('File not found. Please upload your skin-mole picture with format: .png / .jpeg / .jpg / .jfif')
+
+    label_skin = skin_or_else_classification(user_image)
+    # checks if image is a skin image or not (0 = Not skin, 1 = skin)
+    if label_skin == 0:
+        st.write("""
+                This doesn't look like a valid skin image.
+                \nPlease restart with a proper image.
+                """)
+
+    # if skin image, checks whether skin has cancer or not (1 = Cancer, 0 = No cancer)
+    else:
+        cancer_prediction = cancer_classification(uploaded_file)
+        prediction = np.rint(cancer_prediction)
+
+        st.subheader("Results")
+        if prediction[0][0] == 1:
+            st.write('⚠️ The skin seems to be infected by __CANCER__ with an accuracy of {:.2f} %.'.format(cancer_prediction[0][0]*100))
+            st.write("""
+            \nLearn more about skin cancer [here](https://www.mayoclinic.org/diseases-conditions/skin-cancer/symptoms-causes/syc-20377605).
+            \nFor further investigation, please contact your doctor.""")
+
+        else:
+            st.write('The skin looks normal. This image depicts __HEALTHY SKIN__ with an accuracy of {:.2f} %.'.format(cancer_prediction[0][1]*100))
 
 
-
+# Cleans Streamlit layout
+hide_st_style = """
+            <style>
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
