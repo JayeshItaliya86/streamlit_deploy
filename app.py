@@ -31,7 +31,7 @@ and [Logan](https://github.com/lvendrix)
 image_size = (100,125)
 
 # file upload and handling logic
-uploaded_file = st.file_uploader("Upload an image of skin", type=['png', 'jpeg', 'jpg'])
+uploaded_file = st.file_uploader("Upload an image of skin", type=['png', 'jpeg', 'jpg', 'jfif'])
 if uploaded_file is not None:
     user_image = Image.open(uploaded_file).convert('RGB')
     st.image(user_image, use_column_width=True)
