@@ -51,15 +51,15 @@ def cancer_classification(uploaded_file):
         f.write(uploaded_file.getbuffer())
         user_folder = 'user_of_cancer/'
         for img in os.listdir(user_folder):
-            if img.endswith(('.jpeg', '.jpg', '.png', '.jfif')):
+            if img.endswith(('.jpeg', '.jpg', '.png')):
                 img = tf.keras.preprocessing.image.load_img(user_folder+img, target_size=(100,125))
                 img = image.img_to_array(img)
                 img = img.reshape((1, img.shape[0], img.shape[1], img.shape[2]))
                 img = preprocess_input(img)
-                model = keras.models.load_model('models/base_model_v4.h5', compile=False)
+                model = keras.models.load_model('models/base_model_v5.h5', compile=False)
                 prediction = model.predict(img)
         f.close()
         for img in os.listdir(user_folder):
-            if img.endswith(('.jpeg', '.jpg', '.png', '.jfif')):
+            if img.endswith(('.jpeg', '.jpg', '.png')):
                 os.remove(user_folder + img)
     return prediction
