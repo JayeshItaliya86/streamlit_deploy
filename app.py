@@ -21,9 +21,9 @@ st.sidebar.title('Model information')
 st.sidebar.write("""
 Dataset: The [__HAM10000__](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DBW86T)
 \nCNN built with Keras (Tensorflow)
-\nSequential model: Conv2D, Flatten, Dense
+\nSequential model: Conv2D, Dropout, Flatten, Dense
 \n1.5M trainable parameters
-\nAccuracy: 0.92
+\nAccuracy: 0.75
 \nModel and application created @Becode Gent by 
 \n[Anne](https://github.com/annejungers),
 [Jayesh](https://github.com/JayeshItaliya86), 
