@@ -21,7 +21,7 @@ The health company **"skinCare"** wants to create a simple web page where the us
 |:---|:---|
 |app.py|use it for streamlit application|
 |skin_cancer_model.py|use it for streamlit backend function file|
-|models/base_model_v5.h5|save cnn model|
+|models/base_model_v6.h5|save cnn model|
 |models/keras_model_skin_or_else|save model for streamlit application|
 
 # Website
